@@ -14,6 +14,8 @@
 
     $is_valid = true;
 
+    $conversion_result = ""; // Initialisez une variable pour stocker le résultat de la conversion
+
     if (isset($_POST['submit']) && !empty($valeur)) {
         if (!is_numeric($valeur)) {
             $error_message = "La valeur entrée n'est pas un nombre valide.";
@@ -26,38 +28,42 @@
                 if ($devise1 == '€' && $devise2 == 'FCFA') {
                     $conv = 655.96 * $valeur;
                     $conversion_message = $valeur . " € = " . $conv . " FCFA";
+                    $conversion_result = $conversion_message; // Stockez le résultat dans $conversion_result
                     echo "<b class='aff'>" . $conversion_message . "</b>";
                 }
             
                 if ($devise1 == 'FCFA' && $devise2 == '€') {
                     $conv = 0.001524 * $valeur;
                     $conversion_message = $valeur . " FCFA = " . $conv . " €";
+                    $conversion_result = $conversion_message; // Stockez le résultat dans $conversion_result
                     echo "<b class='aff'>" . $conversion_message . "</b>";
                 }
             
                 if ($conv == 0) {
-                    echo "Conversion impossible";
+                    $conversion_result = "Conversion impossible";
+                    echo $conversion_result; // Affichez le message d'erreur
                 }
             
                 // Ajoutez la conversion à l'historique des conversions dans la session avec la date actuelle
                 $conversion_with_date = date("Y-m-d H:i:s") . " - " . $conversion_message;
                 array_push($_SESSION['conversion_history'], $conversion_with_date);
             } else {
-                echo "Sélectionnez des devises différentes pour la conversion.";
+                $conversion_result = "Sélectionnez des devises différentes pour la conversion.";
+                echo $conversion_result; // Affichez le message d'erreur
             }
         }
     }
 ?>
 
+
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Conversion monnaie</title>
-        <link rel="stylesheet" type="text/css" href="style.css">
-        <meta charset="utf8">
-    </head>
-
-    <body>
+<head>
+    <title>Conversion monnaie</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf8">
+</head>
+<body>
     <div id="content" align="center">
         <strong style="color: blue; font-size: 30px;">Conversion monnaie</strong><br><br>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="POST" onsubmit="return validateForm()">
@@ -104,6 +110,15 @@
                 </tr>
             </table>
         </form>
+
+          <!-- Afficher les résultats de conversion ici -->
+          <div id="conversion-result">
+            <?php
+                if (!empty($conversion_result)) {
+                    echo "<b class='aff'>" . $conversion_result . "</b>";
+                }
+            ?>
+        </div>
         
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="POST">
             <label for="date_filtre">Filtrer par date :</label>
@@ -129,6 +144,7 @@
                 <th>Action</th> <!-- Nouvelle colonne pour les actions -->
             </tr>
             <?php
+            $total = 0; // Initialisation du total
             // Affichez l'historique des conversions depuis la session, en filtrant par date si une date est sélectionnée
             foreach ($_SESSION['conversion_history'] as $key => $conversion) {
                 $conversion_parts = explode(" - ", $conversion, 2); // Séparez la date du message
@@ -144,13 +160,27 @@
                         echo "<td>
                                 <a href='editer_conversion.php?id=" . $key . "'>Éditer</a> | 
                                 <a href='delete_conversion.php?id=" . $key . "'>Supprimer</a> | 
-*                              </td>"; // Ajoutez les liens d'édition et de suppression
+                                <a href='update_conversion.php?id=" . $key . "'>Mise à jour</a>
+                              </td>"; // Ajoutez les liens d'édition et de suppression
                         echo "</tr>";
+
+                        // Mettez à jour le total en fonction de la conversion actuelle
+                        // Vous devrez extraire la valeur de la conversion à partir de $message
+                        $conversion_parts = explode(" = ", $message);
+                        if (count($conversion_parts) == 2) {
+                            $conversion_value = trim($conversion_parts[1], " FCFA €");
+                            $total += (float)$conversion_value;
+                        }
                     }
                 }
             }
             ?>
         </table>
+        
+        <!-- Afficher le total en bas du tableau -->
+        <div style="margin-top: 20px;">
+            <strong>Total : <?php echo $total; ?></strong>
+        </div>
     </div>
 
     <!-- JavaScript pour le popup d'erreur -->
