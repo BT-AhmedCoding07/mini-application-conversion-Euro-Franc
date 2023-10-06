@@ -1,0 +1,138 @@
+/* CSS pour le formulaire */
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+table {
+    width: 100%;
+}
+
+td {
+    padding: 10px;
+}
+
+select, input[type="text"], input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Style pour le titre */
+strong {
+    display: block;
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Style pour les messages d'erreur */
+.error-message {
+    color: red;
+    font-weight: bold;
+}
+
+/* Style pour le bouton "Convertir" */
+.bouton {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* Style pour le bouton "Convertir" au survol */
+.bouton:hover {
+    background-color: #0056b3;
+}
+.aff {
+	color: green;
+	font-size: 30px;
+}
+
+/* CSS pour le popup d'erreur */
+#error-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 0, 0, 0.9); /* Fond rouge semi-transparent */
+    color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    max-width: 300px; /* Largeur maximale du popup */
+    text-align: center;
+}
+
+#error-popup .popup-content {
+    position: relative;
+}
+
+#error-popup .close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 20px;
+    cursor: pointer;
+	
+}
+
+.error-message {
+    font-size: 16px;
+    margin-top: 10px;
+	color: #fff;
+}
+
+/* CSS pour l'historique des conversions */
+#conversion-history {
+    margin-top: 20px;
+}
+
+#conversion-history table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #007bff;
+}
+
+#conversion-history table th {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+    text-align: left;
+}
+
+#conversion-history table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+#conversion-history table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#conversion-history table tr:nth-child(odd) {
+    background-color: #ffffff;
+}
